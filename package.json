@@ -8,7 +8,7 @@
     "@typescript-eslint/parser": "^5.40.1"
   },
   "scripts": {
-    "dev": "tsc && nodemon jsToTsDist/server.js",
+    "dev": "tsc && npm run migrate && nodemon jsToTsDist/server.js",
     "start": "node jsToTsDist/server.js",
     "migrate": "sequelize-cli db:migrate",
     "lint": "eslint . --ext .ts"
