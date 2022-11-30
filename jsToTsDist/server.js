@@ -4,10 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const cookieParser = require("cookie-parser");
-const dotenv = require("dotenv");
-const cors = require("cors");
-dotenv.config();
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const dotenv_1 = __importDefault(require("dotenv"));
+const cors_1 = __importDefault(require("cors"));
+dotenv_1.default.config();
 const app = (0, express_1.default)();
 // Access to .env file
 // parse application/x-www-form-urlencoded
@@ -15,9 +15,9 @@ app.use(express_1.default.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
-app.use(cookieParser());
+app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
-app.use(cors({
+app.use((0, cors_1.default)({
     origin: process.env.FRONTEND_URL,
     credentials: true
 }));

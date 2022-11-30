@@ -16,7 +16,7 @@ module.exports = {
             },
             email: {
               allowNull: false,
-              type: DataTypes.STRING(50)
+              type: DataTypes.STRING(100)
             },
             profile_picture: {
               allowNull: true,
@@ -32,7 +32,7 @@ module.exports = {
 
     down: (queryInterface: QueryInterface): Promise<void> => queryInterface.sequelize.transaction(
         async (transaction) => {
-          // here go all migration undo changes
+          await queryInterface.dropTable("User");
         }
     )
 };

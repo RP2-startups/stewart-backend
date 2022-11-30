@@ -1,21 +1,20 @@
 'use strict';
 
-import fs = require('fs');
-import path = require('path');
+import fs from 'fs';
+import path  from 'path';
 import { Sequelize, DataTypes } from 'sequelize';
 // import process = require('process');
 const basename = path.basename(__filename);
 // const env = process.env.NODE_ENV || 'DEV';
-import config = require('../config');
-const selectedConfig = config;
+import config from '../applicationConfig.js';
 
 interface DbSequelizeConfig {
   sequelize: Sequelize;
 }
 
-let db: DbSequelizeConfig;
+let DbConfig: DbSequelizeConfig;
 
-const sequelize = new Sequelize(selectedConfig);
+const sequelize = new Sequelize(config.database, config.username, config.password, config.options);
 
 fs
   .readdirSync(__dirname+"/models")
@@ -25,16 +24,18 @@ fs
   .forEach(async file => {
     const modelConstructor = await import(path.join(__dirname, file));
     const model = modelConstructor(sequelize, DataTypes);
-    db[model.name] = model;
+    DbConfig[model.name] = model;
   });
 
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
+Object.keys(DbConfig).forEach(modelName => {
+  if (DbConfig[modelName].associate) {
+    DbConfig[modelName].associate(DbConfig);
   }
+  if(DbConfig[modelName].init)
+    DbConfig[modelName].init(sequelize);
 });
 
-db.sequelize = sequelize;
+DbConfig.sequelize = sequelize;
 // db.Sequelize = Sequelize;
 
-module.exports = db;
+export default DbConfig;

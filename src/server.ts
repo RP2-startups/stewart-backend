@@ -1,7 +1,7 @@
 import express from 'express';
-import cookieParser = require('cookie-parser');
-import dotenv = require('dotenv');
-import cors = require('cors');
+import cookieParser  from 'cookie-parser';
+import dotenv from 'dotenv';
+import cors from 'cors';
 dotenv.config();
 
 const app = express();
