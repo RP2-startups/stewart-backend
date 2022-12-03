@@ -2,10 +2,10 @@
     "compilerOptions": {
       "module": "CommonJS",
       "esModuleInterop": true,
-      "target": "es6",
-      "moduleResolution": "Node",
+      "target": "ESNext",
+      "moduleResolution": "NodeNext",
       "sourceMap": true,
-      "outDir": "jsToTsDist"
-    },
-    "lib": ["es2021"]
-  }
+      "outDir": "jsToTsDist",
+      "rootDir": "src"
+    }
+}
