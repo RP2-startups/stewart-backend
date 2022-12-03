@@ -1,17 +1,25 @@
 'use strict';
 import { Model, Sequelize, DataTypes} from "sequelize";
+import { UserInput, UserOutput } from "./User/UserAttributes";
 
 
-class User extends Model {
-    init(sequelize : Sequelize){
-      User.init({
-        user_id: DataTypes.INTEGER,
+class User extends Model<UserInput, UserOutput> implements UserOutput {
+    id: number;
+    name: string;
+    email: string;
+    profile_picture: string;
+    about: string;
+    
+    static initialize(sequelize : Sequelize){
+      return this.init({
         name: DataTypes.STRING(50),
         email: DataTypes.STRING(100),
         profile_picture: DataTypes.STRING,
         about: DataTypes.STRING
       }, {
-        sequelize
+        sequelize:sequelize,
+        tableName: "User",
+        modelName: "User"
       })
     }
     /**
@@ -23,4 +31,5 @@ class User extends Model {
       // define association here
     }
   }
-  export default User;
+  
+export default User;
