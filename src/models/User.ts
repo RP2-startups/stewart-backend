@@ -4,18 +4,20 @@ import { UserInput, UserOutput } from "./User/UserAttributes";
 
 
 class User extends Model<UserInput, UserOutput> implements UserOutput {
-    id: number;
-    name: string;
-    email: string;
-    profile_picture: string;
-    about: string;
-    
+    declare id: number;
+    declare name: string;
+    declare email: string;
+    declare profile_picture: string;
+    declare about: string;
+    declare password: string;
+
     static initialize(sequelize : Sequelize){
       return this.init({
         name: DataTypes.STRING(50),
         email: DataTypes.STRING(100),
         profile_picture: DataTypes.STRING,
-        about: DataTypes.STRING
+        about: DataTypes.STRING,
+        password: DataTypes.STRING
       }, {
         sequelize:sequelize,
         tableName: "User",

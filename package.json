@@ -22,10 +22,13 @@
   },
   "homepage": "https://github.com/RP2-startups/stewart-backend#readme",
   "dependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.14",
+    "@types/express-session": "^1.17.5",
     "@types/mime-types": "^2.1.1",
     "@types/multer": "^1.4.7",
     "@types/node": "^18.11.2",
+    "bcrypt": "^5.1.0",
     "connect-session-sequelize": "^7.1.5",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
