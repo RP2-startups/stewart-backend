@@ -36,6 +36,6 @@ Breve explicação das rotas:
   is_adm?:boolean
 }; 
 campos com "?" são opcionais;
-- GET "/projectParticipation": NECESSÁRIO ESTAR LOGADO: retorna todos os projetos que o usuário está participando, bem como as requisições feitas para o usuário; não é necessário enviar nada
+- GET "/projectParticipation": NECESSÁRIO ESTAR LOGADO: retorna todas as relações projeto <-> usuário do usuário, bem como as requisições feitas para o usuário; não é necessário enviar nada
 
 
