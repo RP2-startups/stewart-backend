@@ -22,7 +22,7 @@ const sequelizeSessionStore = new SequelizeStore({
     db: index_1.default,
     expiration: 1000 * 60 * 60 * 24,
 });
-sequelizeSessionStore.sync();
+app.use(express_1.default.static('./files/imgs'));
 app.use((0, express_session_1.default)({
     secret: process.env.SECRET,
     resave: false,

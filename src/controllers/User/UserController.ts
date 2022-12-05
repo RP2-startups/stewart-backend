@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import { ParamsDictionary } from "express-serve-static-core";
-import User from '../../models/User.js';
+import User from '../../models/User/User.js';
 import { UserInput, UserLogin, UserSession } from '../../models/User/UserAttributes.js';
 import { fileUtils } from '../../utils/FileUtils.js';
 import bcrypt from 'bcrypt';
@@ -15,13 +15,13 @@ declare module 'express-session' {
 class UserController{
     async create(req: Request<ParamsDictionary, unknown, UserInput>, res: Response){
         let profileImage : Express.Multer.File;
-        const archives = new Array<Express.Multer.File>();
+        const archives = new Array<{file:Express.Multer.File, filePath: string}>();
         try{
             const registerUserObj = req.body;
             if(req.file){
                 profileImage = req.file;
-                archives.push(profileImage);
                 registerUserObj.profile_picture = fileUtils.getDefaultFileNameAndPath(profileImage.originalname);
+                archives.push({file:profileImage, filePath: registerUserObj.profile_picture});
             }
             registerUserObj.password = cryptoUtils.EncryptPassword(registerUserObj.password);
             await User.create(registerUserObj);
@@ -29,7 +29,7 @@ class UserController{
             return res.status(200).json({message: "User created successfully!"})
         }catch(e){
             console.log(e);
-            const filePaths = archives.map(x => fileUtils.getDefaultFileNameAndPath(x.originalname));
+            const filePaths = archives.map(x => x.filePath);
             fileUtils.deleteImages(filePaths);
             return res.status(400).json({error: e});
         }
@@ -44,7 +44,13 @@ class UserController{
             else{
                 const validPass = await bcrypt.compare(loginObj.password, result.password);
                 if(validPass){
-                    req.session.user = result;
+                    req.session.user = {
+                        id: result.id,
+                        name: result.name,
+                        email: result.email,
+                        profile_picture: result.profile_picture,
+                        about: result.about
+                    };
                     return res.status(200).json({message:"logado"});
                 }
                 else
@@ -64,6 +70,9 @@ class UserController{
                 res.status(200).json({message:'Deslogado'});
               }
         });
+    }
+    async getUser(req: Request, res: Response){
+        return res.status(200).json({user: req.session.user});
     }
 }
 export const userController = new UserController();

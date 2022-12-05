@@ -4,6 +4,7 @@ import path from "path";
 class FileUtils {
   deleteImages(archives: Array<string>) {
     archives.forEach((element) => {
+      console.log(element)
       if(fs.existsSync(element))
         fs.unlinkSync(element);
       console.log(`deleted file ${element}`);
@@ -14,11 +15,10 @@ class FileUtils {
         fileOriginalName
       )}`;
   }
-  saveImages(archives: Array<Express.Multer.File>) {
+  saveImages(archives: Array<{file:Express.Multer.File,filePath:string}>) {
     archives.forEach((element) => {
-      const fileFullName = this.getDefaultFileNameAndPath(element.originalname);
-      fs.writeFileSync(fileFullName, element.buffer);
-      console.log(`saved file ${fileFullName}`);
+      fs.writeFileSync(element.filePath, element.file.buffer);
+      console.log(`saved file ${element.filePath}`);
     });
   }
 }

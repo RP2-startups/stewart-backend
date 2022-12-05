@@ -1,29 +1,27 @@
-import { QueryInterface, DataTypes, QueryTypes } from 'sequelize';
+import { QueryInterface, DataTypes } from 'sequelize';
 
 module.exports = {
     up: (queryInterface: QueryInterface): Promise<void> => queryInterface.sequelize.transaction(
         async (transaction) => {
-          await queryInterface.createTable("User",{
+          await queryInterface.createTable('Project', {
             id: {
               allowNull: false,
               autoIncrement: true,
               primaryKey: true,
               type: DataTypes.INTEGER
             },
-            name:{
-              allowNull:false,
-              type:DataTypes.STRING
+            name: {
+              type: DataTypes.STRING,
+              allowNull: false
             },
-            email: {
-              allowNull: false,
-              type: DataTypes.STRING
+            description: {
+              type: DataTypes.STRING,
+              allowNull: false
             },
-            profile_picture: {
-              allowNull: true,
-              type: DataTypes.STRING
+            picture: {
+              type: DataTypes.STRING,
             },
-            about: {
-              allowNull: true,
+            background_picture: {
               type: DataTypes.STRING
             },
             created_at: {
@@ -40,7 +38,7 @@ module.exports = {
 
     down: (queryInterface: QueryInterface): Promise<void> => queryInterface.sequelize.transaction(
         async (transaction) => {
-          await queryInterface.dropTable("User");
+          await queryInterface.dropTable("Project");
         }
     )
 };

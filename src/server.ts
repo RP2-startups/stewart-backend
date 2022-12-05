@@ -23,7 +23,7 @@ const sequelizeSessionStore = new SequelizeStore({
     
 });
 
-sequelizeSessionStore.sync();
+app.use(express.static('./files/imgs'));
 
 app.use(expressSession({
   secret: process.env.SECRET, // TODO: palavra aleatoria no campo SECRET do .env
