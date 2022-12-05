@@ -9,6 +9,7 @@ import Project from "../../models/Project/Project";
 import ProjectParticipation from "../../models/Project/ProjectParticipation";
 import { fileUtils } from "../../utils/FileUtils";
 import { UserSession } from "../../models/User/UserAttributes";
+import { Op } from "sequelize";
 declare module 'express-session' {
     interface SessionData {
       user: UserSession;
@@ -20,6 +21,9 @@ interface ProjectCreateObj {
 }
 interface ProjectAcceptReject {
   project_id: number;
+}
+interface ProjectSearchReq{
+  search_term: string;
 }
 
 class ProjectController {
@@ -145,6 +149,22 @@ class ProjectController {
         console.log(e);
         return res.status(400).json({error: e});
     }
+  }
+  async searchProjects(
+    req: Request<ParamsDictionary, unknown, ProjectSearchReq>,
+    res: Response
+  ) {
+    try{
+      const term = req.body.search_term;
+      const results = await Project.findAll({where: {name:{
+        [Op.like]: `%${term}%`
+      }}});
+      return res.status(200).json(results);
+    }catch(e){
+      console.log(e);
+      return res.status(400).json({error:e});
+    }
+    
   }
   //#endregion
 
