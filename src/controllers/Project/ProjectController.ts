@@ -151,11 +151,11 @@ class ProjectController {
     }
   }
   async searchProjects(
-    req: Request<ParamsDictionary, unknown, ProjectSearchReq>,
+    req: Request<ParamsDictionary, unknown, unknown, ProjectSearchReq>,
     res: Response
   ) {
     try{
-      const term = req.body.search_term;
+      const term = req.query.search_term;
       const results = await Project.findAll({where: {name:{
         [Op.like]: `%${term}%`
       }}});
