@@ -13,6 +13,7 @@ Para rodar:
 Se quiser realizar um "run limpo" do backend, deve-se:
 - Apagar tudo da tabela SequelizeMeta
 - Apagar todas as tabelas
+- Apagar a pasta jsToTsDist antes de rodar de novo
 
 Para testar as rotas, pode-se usar o Insomnia com o Insomnia_2022-12-04.json na raíz do repositório;
 
