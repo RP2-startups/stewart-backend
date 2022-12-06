@@ -174,6 +174,8 @@ class ProjectController {
         where: termClause,
         include: [
           {
+            required:false,
+            //
             attributes:['project_category_id'],
             as: "projectCategories",
             model: ProjectCategoryCategory,
