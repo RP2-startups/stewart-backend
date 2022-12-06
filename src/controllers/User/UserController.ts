@@ -80,7 +80,7 @@ class UserController{
     async getUsers(req: Request<ParamsDictionary, unknown, unknown, UsersQuery>, res: Response){
         try{
             const users = await User.findAll({
-              attributes: ["id", "email"],
+              attributes: ["id", "email", "name", "profile_picture", "about"],
               where: {
                 [Op.or]: 
                   [
