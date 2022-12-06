@@ -160,22 +160,24 @@ class ProjectController {
     try{
       const term = req.query.search_term;
       const categories = req.query.categories;
+      const whereClause = categories
+        ? {
+            project_category_id: {
+              [Op.in]: categories,
+            },
+          }
+        : {};
+      const termClause = term ? {name: {
+        [Op.like]: `%${term}%`,
+      }} : {};
       const results = await Project.findAll({
-        where: {
-          name: {
-            [Op.like]: `%${term}%`,
-          },
-        },
+        where: termClause,
         include: [
           {
             attributes:['project_category_id'],
             as: "projectCategories",
             model: ProjectCategoryCategory,
-            where: {
-              project_category_id: {
-                [Op.in]: categories,
-              },
-            },
+            where: whereClause
           },
         ],
       });
