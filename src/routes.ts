@@ -20,6 +20,6 @@ routes.post("/projectParticipation/accept", sessionChecker.DefaultSessionChecker
 routes.post("/projectParticipation/reject", sessionChecker.DefaultSessionChecker, projectController.rejectProjectParticipation);
 routes.post("/projectParticipation", sessionChecker.DefaultSessionChecker, projectController.createProjectParticipation);
 routes.get("/projectParticipation", sessionChecker.DefaultSessionChecker, projectController.getProjectParticipation);
-
+routes.get("/projectCategories", projectController.getCategories);
 
 export default routes;
