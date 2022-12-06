@@ -175,7 +175,6 @@ class ProjectController {
         include: [
           {
             required:false,
-            //
             attributes:['project_category_id'],
             as: "projectCategories",
             model: ProjectCategoryCategory,
@@ -193,7 +192,7 @@ class ProjectController {
   async getCategories(req: Request<ParamsDictionary, unknown, unknown>,
     res: Response){
       try{
-        const results = ProjectCategory.findAll();
+        const results = await ProjectCategory.findAll();
         return res.status(200).json(results);
       }catch(e){
         console.log(e);
