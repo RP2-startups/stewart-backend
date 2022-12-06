@@ -25,7 +25,7 @@ class ProjectParticipation
       },
       {
         sequelize,
-        modelName: "Project_Participation",
+        modelName: "ProjectParticipation",
         tableName: "Project_Participation",
       }
     );

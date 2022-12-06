@@ -6,12 +6,15 @@ import routes from './routes.js';
 import sequelize from './models/index';
 import expressSession from 'express-session';
 import sequelizeStore from 'connect-session-sequelize';
+import path from 'path';
+
 dotenv.config();
 
 const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
+
 // parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
@@ -23,7 +26,9 @@ const sequelizeSessionStore = new SequelizeStore({
     
 });
 
-app.use(express.static('./files/imgs'));
+// sequelizeSessionStore.sync();
+
+app.use("/files/imgs",express.static(path.join(__dirname, '../files/imgs')));
 
 app.use(expressSession({
   secret: process.env.SECRET, // TODO: palavra aleatoria no campo SECRET do .env
@@ -42,8 +47,6 @@ app.use(cors({
 }));
 
 app.use(routes);
-
-
 
 app.listen(process.env.PORT, () => {
   return console.log(`Express is listening at http://localhost:${process.env.PORT}`);

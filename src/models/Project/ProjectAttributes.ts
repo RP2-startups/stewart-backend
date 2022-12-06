@@ -26,3 +26,18 @@ export type ProjectParticipationAttributes = {
 
 export type ProjectParticipationOutput = Required<ProjectParticipationAttributes>
 export type ProjectParticipationInput = Optional<ProjectParticipationAttributes, 'id' | 'message' | 'is_accepted' | 'is_adm'>
+
+interface ProjectCategory{
+  id: number,
+  name: string
+}
+export type ProjectCategoryInput = Optional<ProjectCategory, 'id'>
+export type ProjectCategoryOutput = Required<ProjectCategory>
+
+interface ProjectCategoryCategory{
+  id:number,
+  project_id:number,
+  project_category_id:number
+}
+export type ProjectCategoryCategoryInput = Optional<ProjectCategoryCategory, 'id'>
+export type ProjectCategoryCategoryOutput = Required<ProjectCategoryCategory>

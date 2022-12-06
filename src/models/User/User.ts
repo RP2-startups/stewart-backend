@@ -34,10 +34,10 @@ class User extends Model<UserInput, UserOutput> implements UserOutput {
   static associate(models: {
     [key: string]: ModelStatic<Model<unknown, unknown>>;
   }) {
-  //   this.hasMany(models.ProjectParticipation, {
-  //     foreignKey: 'user_id',
-  //     as: 'userProjectParticipations'
-  // });
+    this.hasMany(models.ProjectParticipation, {
+      foreignKey: 'user_id',
+      as: 'userProjectParticipations'
+  });
   }
 }
 

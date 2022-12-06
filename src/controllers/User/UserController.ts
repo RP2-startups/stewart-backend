@@ -5,12 +5,18 @@ import { UserInput, UserLogin, UserSession } from '../../models/User/UserAttribu
 import { fileUtils } from '../../utils/FileUtils.js';
 import bcrypt from 'bcrypt';
 import cryptoUtils from '../../utils/CryptoUtils.js';
+import { Op } from 'sequelize';
 
 declare module 'express-session' {
     interface SessionData {
       user: UserSession;
     }
   }
+
+interface UsersQuery{
+    email:string,
+    name:string
+}
 
 class UserController{
     async create(req: Request<ParamsDictionary, unknown, UserInput>, res: Response){
@@ -70,6 +76,32 @@ class UserController{
                 res.status(200).json({message:'Deslogado'});
               }
         });
+    }
+    async getUsers(req: Request<ParamsDictionary, unknown, unknown, UsersQuery>, res: Response){
+        try{
+            const users = await User.findAll({
+              attributes: ["id", "email"],
+              where: {
+                [Op.or]: 
+                  [
+                    {
+                      name: {
+                        [Op.like]: `%${req.query.name}%`,
+                      },
+                    },
+                    {
+                      email: {
+                        [Op.like]: `%${req.query.email}%`,
+                      },
+                    },
+                  ]
+                }             
+            });
+            return res.status(200).json(users);
+        }catch(e){
+            console.log(e);
+            return res.status(400).json({error : e});
+        }
     }
     async getUser(req: Request, res: Response){
         return res.status(200).json({user: req.session.user});

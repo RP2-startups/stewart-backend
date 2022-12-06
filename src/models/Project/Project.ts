@@ -23,7 +23,7 @@ class Project
       {
         sequelize: sequelize,
         modelName: "Project",
-        tableName: "Project"
+        tableName: "Project",
       }
     );
   }
@@ -35,10 +35,14 @@ class Project
   static associate(models: {
     [key: string]: ModelStatic<Model<unknown, unknown>>;
   }) {
-  //   this.hasMany(models.ProjectParticipation, {
-  //     foreignKey: 'project_id',
-  //     as: 'projectParticipations'
-  // });
+    this.hasMany(models.ProjectCategoryCategory, {
+      foreignKey: "project_id",
+      as: "projectCategories",
+    });
+    this.hasMany(models.ProjectParticipation, {
+      foreignKey: "project_id",
+      as:"projectParticipations"
+    });
   }
 }
 

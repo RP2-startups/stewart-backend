@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "tsc && npm run migrate && nodemon jsToTsDist/server.js",
+    "seed": "sequelize-cli db:seed:all",
     "start": "nodemon jsToTsDist/server.js",
     "migrate": "sequelize-cli db:migrate",
     "lint": "eslint . --ext .ts"

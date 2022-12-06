@@ -10,11 +10,13 @@ import ProjectParticipation from "../../models/Project/ProjectParticipation";
 import { fileUtils } from "../../utils/FileUtils";
 import { UserSession } from "../../models/User/UserAttributes";
 import { Op } from "sequelize";
+import ProjectCategory from "../../models/Project/ProjectCategory";
+import ProjectCategoryCategory from "../../models/Project/ProjectCategoryCategory";
 declare module 'express-session' {
     interface SessionData {
       user: UserSession;
     }
-  }
+}
 interface ProjectCreateObj {
   projectParticipations: string;
   project: string;
@@ -24,6 +26,7 @@ interface ProjectAcceptReject {
 }
 interface ProjectSearchReq{
   search_term: string;
+  categories: Array<number>
 }
 
 class ProjectController {
@@ -156,9 +159,26 @@ class ProjectController {
   ) {
     try{
       const term = req.query.search_term;
-      const results = await Project.findAll({where: {name:{
-        [Op.like]: `%${term}%`
-      }}});
+      const categories = req.query.categories;
+      const results = await Project.findAll({
+        where: {
+          name: {
+            [Op.like]: `%${term}%`,
+          },
+        },
+        include: [
+          {
+            attributes:['project_category_id'],
+            as: "projectCategories",
+            model: ProjectCategoryCategory,
+            where: {
+              project_category_id: {
+                [Op.in]: categories,
+              },
+            },
+          },
+        ],
+      });
       return res.status(200).json(results);
     }catch(e){
       console.log(e);
@@ -166,6 +186,17 @@ class ProjectController {
     }
     
   }
+  async getCategories(req: Request<ParamsDictionary, unknown, unknown>,
+    res: Response){
+      try{
+        const results = ProjectCategory.findAll();
+        return res.status(200).json(results);
+      }catch(e){
+        console.log(e);
+        return res.status(400).json({error: e});
+      }
+
+    }
   //#endregion
 
   //#region not-route methods

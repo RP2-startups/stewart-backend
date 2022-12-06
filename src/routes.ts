@@ -12,6 +12,7 @@ routes.post("/user", fileUploader.single("profileImage"), userController.create)
 routes.post("/login", userController.login);
 routes.post("/logout", userController.logout);
 routes.get("/user", sessionChecker.DefaultSessionChecker, userController.getUser);
+routes.get("/users", userController.getUsers);
 
 routes.post("/project", sessionChecker.DefaultSessionChecker, fileUploader.fields([{name:"picture", maxCount:1}, {name: "background_picture", maxCount:1}]), projectController.create);
 routes.get("/projects", projectController.searchProjects);
@@ -19,5 +20,6 @@ routes.post("/projectParticipation/accept", sessionChecker.DefaultSessionChecker
 routes.post("/projectParticipation/reject", sessionChecker.DefaultSessionChecker, projectController.rejectProjectParticipation);
 routes.post("/projectParticipation", sessionChecker.DefaultSessionChecker, projectController.createProjectParticipation);
 routes.get("/projectParticipation", sessionChecker.DefaultSessionChecker, projectController.getProjectParticipation);
+
 
 export default routes;
