@@ -256,27 +256,32 @@ class ProjectController {
     try{
       const term = req.query.search_term;
       const categories = req.query.categories;
-      const whereClause = categories
-        ? {
+      // const whereClause = categories
+      //   ? {
+      //       project_category_id: {
+      //         [Op.in]: categories,
+      //       },
+      //     }
+      //   : {};
+      const includeClause = categories ?  [
+        {
+          required:false,
+          attributes:['project_category_id'],
+          as: "projectCategories",
+          model: ProjectCategoryCategory,
+          where: {
             project_category_id: {
               [Op.in]: categories,
             },
           }
-        : {};
+        },
+      ] : [];
       const termClause = term ? {name: {
         [Op.like]: `%${term}%`,
       }} : {};
       const results = await Project.findAll({
         where: termClause,
-        include: [
-          {
-            required:false,
-            attributes:['project_category_id'],
-            as: "projectCategories",
-            model: ProjectCategoryCategory,
-            where: whereClause
-          },
-        ],
+        include: includeClause
       });
       return res.status(200).json(results);
     }catch(e){
