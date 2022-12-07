@@ -80,8 +80,9 @@ class ProjectController {
       console.log(archives);
       await ProjectCategory.bulkCreate(categoriesObj);
       console.log("categorias relacionadas com o projeto")
+      const projectParticipationsDb = new Array<{user_id:string}>();
       projectParticipationsObj.forEach(
-        (project) => (project.project_id = result.id)
+        (userId) => (projectParticipationsDb.push({user_id:userId}))
       );
       await ProjectParticipation.create({
         user_id: req.session.user.id,
