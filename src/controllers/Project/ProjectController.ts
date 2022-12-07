@@ -165,6 +165,26 @@ class ProjectController {
       return res.status(400).json({ error: e });
     }
   }
+  async acceptAdmProjectParticipation(
+    req: Request<ParamsDictionary, unknown, ProjectAcceptReject>,
+    res: Response
+  ) {
+    const project = await ProjectParticipation.findAll({where:{project_id: req.body.project_id, user_id : req.session.user.id}});
+    if(!(project && project[0].is_adm))
+      return res.status(401).json({error:"aceso não autorizado"});
+    try {
+      await ProjectController.updateProjectParticipation(
+        req,
+        isAcceptedTypes.accepted
+      );
+      return res
+        .status(200)
+        .json({ message: "Project participation rejected" });
+    } catch (e) {
+      console.log(e);
+      return res.status(400).json({ error: e });
+    }
+  }
   async rejectProjectParticipation(
     req: Request<ParamsDictionary, unknown, ProjectAcceptReject>,
     res: Response
@@ -190,6 +210,30 @@ class ProjectController {
         const results = await ProjectParticipation.findAll({
           where: {
             user_id: req.session.user.id,
+          },
+          include: [
+            {
+              required: true,
+              as: "project",
+              model: Project
+            },
+          ],
+        });
+        return res.status(200).json(results);
+    }catch(e){
+        console.log(e);
+        return res.status(400).json({error: e});
+    }
+  }
+  async getProjectParticipationByPrj(
+    req: Request<ParamsDictionary, unknown, unknown>,
+    res: Response
+  ){
+    try{
+        const results = await ProjectParticipation.findAll({
+          where: {
+            user_id: req.session.user.id,
+            project_id: req.params["id"]
           },
           include: [
             {
@@ -241,7 +285,32 @@ class ProjectController {
     }
     
   }
-  async getCategories(req: Request<ParamsDictionary, unknown, unknown>,
+  async getProjects(
+    req: Request<ParamsDictionary, unknown, unknown>,
+    res: Response
+  ) {
+    try{
+      const results = await Project.findAll({
+        include: [
+          {
+            required:true,
+            attributes:['project_category_id'],
+            as: "projectParticipations",
+            model: ProjectParticipation,
+            where: {
+              user_id : req.session.user.id
+            }
+          },
+        ],
+      });
+      return res.status(200).json(results);
+    }catch(e){
+      console.log(e);
+      return res.status(400).json({error:e});
+    }
+    
+  }
+    async getCategories(req: Request<ParamsDictionary, unknown, unknown>,
     res: Response){
       try{
         const results = await ProjectCategory.findAll();

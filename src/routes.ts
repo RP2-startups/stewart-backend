@@ -23,6 +23,7 @@ routes.post("/projectParticipation/accept", sessionChecker.DefaultSessionChecker
 routes.post("/projectParticipation/reject", sessionChecker.DefaultSessionChecker, projectController.rejectProjectParticipation);
 routes.post("/projectParticipation", sessionChecker.DefaultSessionChecker, projectController.createProjectParticipation);
 routes.get("/projectParticipation", sessionChecker.DefaultSessionChecker, projectController.getProjectParticipation);
+routes.get("/projectParticipation/:id", sessionChecker.DefaultSessionChecker, projectController.getProjectParticipationByPrj);
 routes.get("/projectCategories", projectController.getCategories);
 
 routes.post("/post", sessionChecker.DefaultSessionChecker, fileUploader.single("postPicture"), postController.create);

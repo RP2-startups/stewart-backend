@@ -1,7 +1,7 @@
 import { Optional } from "sequelize"
 
 export enum isAcceptedTypes{
-  "pending","accepted","rejected"
+  "pending","accepted","rejected","request_to_adm"
 }
 
 interface ProjectAttributes{

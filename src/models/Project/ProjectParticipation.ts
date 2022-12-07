@@ -20,7 +20,7 @@ class ProjectParticipation
         user_id: DataTypes.NUMBER,
         project_id: DataTypes.NUMBER,
         is_adm: DataTypes.BOOLEAN,
-        is_accepted: DataTypes.ENUM("pending","accepted","rejected"),
+        is_accepted: DataTypes.ENUM("pending","accepted","rejected","request_to_adm"),
         message: DataTypes.STRING
       },
       {
