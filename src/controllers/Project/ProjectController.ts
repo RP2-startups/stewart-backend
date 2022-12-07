@@ -62,6 +62,9 @@ class ProjectController {
         );
         archives.push({ file: picture, filePath: projectObj.picture });
       }
+      else{
+        projectObj.picture = "./files/imgs/padrao.png";
+      }
       if (background_picture) {
         projectObj.background_picture = fileUtils.getDefaultFileNameAndPath(
           background_picture.originalname
@@ -70,6 +73,9 @@ class ProjectController {
           file: background_picture,
           filePath: projectObj.background_picture,
         });
+      }
+      else{
+        projectObj.background_picture = "./files/imgs/back_padrao.png";
       }
       result = await Project.create(projectObj);
     } catch (e) {
