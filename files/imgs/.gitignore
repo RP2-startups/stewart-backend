@@ -2,3 +2,4 @@
 *.webp
 *.png
 *.jpeg
+!padrao.png
