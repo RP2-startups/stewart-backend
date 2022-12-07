@@ -144,12 +144,12 @@ class ProjectController {
     }
   }
   async createProjectParticipation(
-    req: Request<ParamsDictionary, unknown, Array<ProjectParticipationInput>>,
+    req: Request<ParamsDictionary, unknown, ProjectParticipationInput>,
     res: Response
   ) {
     const projectParticipation = req.body;
     try {
-      await ProjectParticipation.bulkCreate(projectParticipation);
+      await ProjectParticipation.create(projectParticipation);
       return res.status(200).json({ message: "Project participations sent" });
     } catch (e) {
       console.log(e);
