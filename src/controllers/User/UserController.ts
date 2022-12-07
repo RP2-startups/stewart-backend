@@ -85,7 +85,7 @@ class UserController{
             const users = await User.findAll({
               attributes: ["id", "email", "name", "profile_picture", "about"],
               where: {
-                [Op.or]: 
+                [Op.or]:
                   [
                     {
                       name: {
@@ -98,7 +98,7 @@ class UserController{
                       },
                     },
                   ]
-                }             
+                }
             });
             return res.status(200).json(users);
         }catch(e){
@@ -106,6 +106,17 @@ class UserController{
             return res.status(400).json({error : e});
         }
     }
+    async getAllUsers(req: Request<ParamsDictionary, unknown, unknown, UsersQuery>, res: Response){
+      try{
+          const users = await User.findAll({
+            attributes: ["id", "email", "name", "profile_picture", "about"],
+          });
+          return res.status(200).json(users);
+      }catch(e){
+          console.log(e);
+          return res.status(400).json({error : e});
+      }
+  }
     async getUser(req: Request, res: Response){
         return res.status(200).json({user: req.session.user});
     }

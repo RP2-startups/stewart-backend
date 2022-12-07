@@ -15,6 +15,7 @@ routes.post("/login", userController.login);
 routes.post("/logout", userController.logout);
 routes.get("/user", sessionChecker.DefaultSessionChecker, userController.getUser);
 routes.get("/users", userController.getUsers);
+routes.get("/allusers", userController.getAllUsers);
 
 routes.post("/project", sessionChecker.DefaultSessionChecker, fileUploader.fields([{name:"picture", maxCount:1}, {name: "background_picture", maxCount:1}]), projectController.create);
 routes.get("/projects", projectController.searchProjects);
