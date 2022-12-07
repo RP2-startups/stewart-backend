@@ -265,7 +265,7 @@ class ProjectController {
             }
           ]
         }
-          
+
         ]
       })
         // const results = await ProjectParticipation.findAll({
@@ -323,7 +323,7 @@ class ProjectController {
   ) {
     try{
       const term = req.query.search_term;
-      const categories = req.query.categories;     
+      const categories = req.query.categories;
       const termClause = term ? {name: {
         [Op.like]: `%${term}%`,
       }} : {};
@@ -339,14 +339,26 @@ class ProjectController {
               project_category_id: categories
             } : {}
           },
-        ] 
+        ]
       });
       return res.status(200).json(results);
     }catch(e){
       console.log(e);
       return res.status(400).json({error:e});
     }
-    
+
+  }
+  async searchAllProjects(
+    req: Request<ParamsDictionary, unknown, unknown, ProjectSearchReq>,
+    res: Response
+  ) {
+    try{
+      const results = await Project.findAll({});
+      return res.status(200).json(results);
+    }catch(e){
+      console.log(e);
+      return res.status(400).json({error:e});
+    }
   }
   async getProjects(
     req: Request<ParamsDictionary, unknown, unknown>,
@@ -371,7 +383,7 @@ class ProjectController {
       console.log(e);
       return res.status(400).json({error:e});
     }
-    
+
   }
     async getCategories(req: Request<ParamsDictionary, unknown, unknown>,
     res: Response){
