@@ -1,6 +1,6 @@
 "use strict";
 import { Model, Sequelize, DataTypes, ModelStatic } from "sequelize";
-import { ProjectParticipationOutput, ProjectParticipationInput, isAcceptedTypes } from "./ProjectAttributes";
+import { ProjectParticipationOutput, ProjectParticipationInput } from "./ProjectAttributes";
 
 class ProjectParticipation
   extends Model<ProjectParticipationInput, ProjectParticipationOutput>

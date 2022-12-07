@@ -18,6 +18,7 @@ routes.get("/users", userController.getUsers);
 
 routes.post("/project", sessionChecker.DefaultSessionChecker, fileUploader.fields([{name:"picture", maxCount:1}, {name: "background_picture", maxCount:1}]), projectController.create);
 routes.get("/projects", projectController.searchProjects);
+routes.get("/project/:id", projectController.getProject);
 routes.post("/projectParticipation/accept", sessionChecker.DefaultSessionChecker, projectController.acceptProjectParticipation);
 routes.post("/projectParticipation/reject", sessionChecker.DefaultSessionChecker, projectController.rejectProjectParticipation);
 routes.post("/projectParticipation", sessionChecker.DefaultSessionChecker, projectController.createProjectParticipation);

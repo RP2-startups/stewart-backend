@@ -12,6 +12,7 @@ import { UserSession } from "../../models/User/UserAttributes";
 import { Op } from "sequelize";
 import ProjectCategory from "../../models/Project/ProjectCategory";
 import ProjectCategoryCategory from "../../models/Project/ProjectCategoryCategory";
+import User from "../../models/User/User";
 declare module 'express-session' {
     interface SessionData {
       user: UserSession;
@@ -20,6 +21,7 @@ declare module 'express-session' {
 interface ProjectCreateObj {
   projectParticipations: string;
   project: string;
+  categories: string;
 }
 interface ProjectAcceptReject {
   project_id: number;
@@ -35,7 +37,8 @@ class ProjectController {
     req: Request<ParamsDictionary, unknown, ProjectCreateObj>,
     res: Response
   ) {
-    const { project, projectParticipations } = req.body;
+    const { project, projectParticipations, categories } = req.body;
+    const categoriesObj = JSON.parse(categories);
     const projectObj = JSON.parse(project);
     const projectParticipationsObj = JSON.parse(projectParticipations);
     const archives = new Array<{
@@ -75,6 +78,8 @@ class ProjectController {
     }
     try {
       console.log(archives);
+      await ProjectCategory.bulkCreate(categoriesObj);
+      console.log("categorias relacionadas com o projeto")
       projectParticipationsObj.forEach(
         (project) => (project.project_id = result.id)
       );
@@ -99,6 +104,35 @@ class ProjectController {
       const filePaths = archives.map((x) => x.filePath);
       fileUtils.deleteImages(filePaths);
       return res.status(400).json({ error: e });
+    }
+  }
+  async getProject(
+    req: Request<ParamsDictionary, unknown, unknown>,
+    res: Response
+  ) {
+    try{
+      const projectId = parseInt(req.params["id"]);
+      const result = await Project.findByPk(projectId, {
+        include: [
+          {
+            model: ProjectParticipation,
+            as: "projectParticipations",
+            include: [
+              {
+                attributes:['profile_picture','name'],
+                required: true,
+                model: User,
+                as: "user",
+              },
+            ],
+          },
+        ],
+      });
+      return res.status(200).json(result);
+
+    }catch(e){
+      console.log(e);
+      return res.status(400).json({error:e});
     }
   }
   async createProjectParticipation(
