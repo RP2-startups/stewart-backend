@@ -43,6 +43,14 @@ class Project
       foreignKey: "project_id",
       as:"projectParticipations"
     });
+    this.hasMany(models.Post, {
+      foreignKey: "project_id",
+      as: "projectPosts",
+    });
+    this.hasMany(models.Follow, {
+      foreignKey: "project_id",
+      as: "projectFollowers",
+    });
   }
 }
 

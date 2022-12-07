@@ -78,6 +78,13 @@ class ProjectController {
       projectParticipationsObj.forEach(
         (project) => (project.project_id = result.id)
       );
+      await ProjectParticipation.create({
+        user_id: req.session.user.id,
+        project_id: result.id,
+        is_accepted: "accepted",
+        is_adm: true
+      });
+      console.log("usuário criador adicionado na relação com o projeto")
       await ProjectParticipation.bulkCreate(projectParticipationsObj);
       fileUtils.saveImages(archives);
       return res
@@ -146,7 +153,18 @@ class ProjectController {
     res: Response
   ){
     try{
-        const results = await ProjectParticipation.findAll({where:{user_id : req.session.user.id}});
+        const results = await ProjectParticipation.findAll({
+          where: {
+            user_id: req.session.user.id,
+          },
+          include: [
+            {
+              required: true,
+              as: "project",
+              model: Project
+            },
+          ],
+        });
         return res.status(200).json(results);
     }catch(e){
         console.log(e);

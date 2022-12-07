@@ -4,6 +4,8 @@ import multer from 'multer';
 import { userController } from './controllers/User/UserController.js';
 import sessionChecker from './middlewares/authentication/SessionChecker.js';
 import projectController from './controllers/Project/ProjectController.js';
+import postController from './controllers/Post/PostController.js';
+import followController from './controllers/Follow/FollowController.js';
 
 const routes = Router();
 const fileUploader = multer(profile.config);
@@ -21,5 +23,14 @@ routes.post("/projectParticipation/reject", sessionChecker.DefaultSessionChecker
 routes.post("/projectParticipation", sessionChecker.DefaultSessionChecker, projectController.createProjectParticipation);
 routes.get("/projectParticipation", sessionChecker.DefaultSessionChecker, projectController.getProjectParticipation);
 routes.get("/projectCategories", projectController.getCategories);
+
+routes.post("/post", sessionChecker.DefaultSessionChecker, fileUploader.single("postPicture"), postController.create);
+routes.get("/posts", sessionChecker.DefaultSessionChecker, postController.listUserPosts);
+routes.get("/posts/:id", sessionChecker.DefaultSessionChecker, postController.listPosts);
+
+routes.post("/follow/:id", sessionChecker.DefaultSessionChecker, followController.create);
+routes.post("/follow/check/:id", sessionChecker.DefaultSessionChecker, followController.checkFollow);
+
+
 
 export default routes;
