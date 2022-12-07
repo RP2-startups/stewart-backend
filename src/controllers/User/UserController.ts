@@ -29,6 +29,9 @@ class UserController{
                 registerUserObj.profile_picture = fileUtils.getDefaultFileNameAndPath(profileImage.originalname);
                 archives.push({file:profileImage, filePath: registerUserObj.profile_picture});
             }
+            else{
+              registerUserObj.profile_picture = "./files/imgs/padrao.png";
+            }
             registerUserObj.password = cryptoUtils.EncryptPassword(registerUserObj.password);
             await User.create(registerUserObj);
             fileUtils.saveImages(archives);
