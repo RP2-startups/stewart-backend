@@ -25,6 +25,7 @@ routes.post("/projectParticipation/reject", sessionChecker.DefaultSessionChecker
 routes.post("/projectParticipation/accept-adm", sessionChecker.DefaultSessionChecker, projectController.acceptAdmProjectParticipation);
 routes.post("/projectParticipation", sessionChecker.DefaultSessionChecker, projectController.createProjectParticipation);
 routes.get("/projectParticipation", sessionChecker.DefaultSessionChecker, projectController.getProjectParticipation);
+routes.get("/projectParticipation/adm", sessionChecker.DefaultSessionChecker, projectController.getProjectParticipationAdm);
 routes.get("/projectParticipation/:id", sessionChecker.DefaultSessionChecker, projectController.getProjectParticipationByPrj);
 routes.get("/projectCategories", projectController.getCategories);
 

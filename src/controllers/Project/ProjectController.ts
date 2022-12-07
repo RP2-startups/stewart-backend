@@ -28,7 +28,7 @@ interface ProjectAcceptReject {
 }
 interface ProjectSearchReq{
   search_term: string;
-  categories: Array<number>
+  categories: Array<number> | number
 }
 
 class ProjectController {
@@ -233,6 +233,36 @@ class ProjectController {
         return res.status(400).json({error: e});
     }
   }
+  async getProjectParticipationAdm(
+    req: Request<ParamsDictionary, unknown, unknown>,
+    res: Response
+  ){
+    try{
+        const results = await ProjectParticipation.findAll({
+          where:{user_id:{[Op.ne]:req.session.user.id}},
+          include: [
+            {
+              required: true,
+              as: "project",
+              model: Project,
+              include:[{
+                required:true,
+                model: ProjectParticipation,
+                as:'projectParticipations',
+                where:{
+                  is_adm:true,
+                  user_id:req.session.user.id
+                }
+              }
+            ],
+            }],
+        });
+        return res.status(200).json(results);
+    }catch(e){
+        console.log(e);
+        return res.status(400).json({error: e});
+    }
+  }
   async getProjectParticipationByPrj(
     req: Request<ParamsDictionary, unknown, unknown>,
     res: Response
@@ -263,33 +293,23 @@ class ProjectController {
   ) {
     try{
       const term = req.query.search_term;
-      const categories = req.query.categories;
-      // const whereClause = categories
-      //   ? {
-      //       project_category_id: {
-      //         [Op.in]: categories,
-      //       },
-      //     }
-      //   : {};
-      const includeClause = categories ?  [
-        {
-          required:false,
-          attributes:['project_category_id'],
-          as: "projectCategories",
-          model: ProjectCategoryCategory,
-          where: {
-            project_category_id: {
-              [Op.in]: categories,
-            },
-          }
-        },
-      ] : [];
+      const categories = req.query.categories;     
       const termClause = term ? {name: {
         [Op.like]: `%${term}%`,
       }} : {};
       const results = await Project.findAll({
         where: termClause,
-        include: includeClause
+        include: [
+          {
+            required:categories ? true : false,
+            attributes:['project_category_id'],
+            as: "projectCategories",
+            model: ProjectCategoryCategory,
+            where: {
+              project_category_id: categories
+            }
+          },
+        ] 
       });
       return res.status(200).json(results);
     }catch(e){
