@@ -84,6 +84,7 @@ class ProjectController {
     }
     try {
       console.log(archives);
+      categoriesObj.forEach(x => x.project_id = result.id);
       await ProjectCategoryCategory.bulkCreate(categoriesObj);
       console.log("categorias relacionadas com o projeto")
       const projectParticipationsDb = new Array<ProjectParticipationInput>();
