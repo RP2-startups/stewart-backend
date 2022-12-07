@@ -80,9 +80,9 @@ class ProjectController {
       console.log(archives);
       await ProjectCategory.bulkCreate(categoriesObj);
       console.log("categorias relacionadas com o projeto")
-      const projectParticipationsDb = new Array<{user_id:string}>();
+      const projectParticipationsDb = new Array<ProjectParticipationInput>();
       projectParticipationsObj.forEach(
-        (userId) => (projectParticipationsDb.push({user_id:userId}))
+        (userId) => (projectParticipationsDb.push({user_id:userId, project_id: result.id}))
       );
       await ProjectParticipation.create({
         user_id: req.session.user.id,
@@ -91,7 +91,7 @@ class ProjectController {
         is_adm: true
       });
       console.log("usuário criador adicionado na relação com o projeto")
-      await ProjectParticipation.bulkCreate(projectParticipationsObj);
+      await ProjectParticipation.bulkCreate(projectParticipationsDb);
       fileUtils.saveImages(archives);
       return res
         .status(200)
