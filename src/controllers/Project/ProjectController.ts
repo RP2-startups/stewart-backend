@@ -254,7 +254,8 @@ class ProjectController {
               where:{
                 user_id:{
                   [Op.ne]:req.session.user.id
-                }
+                },
+                is_accepted: "request_to_adm"
               }
             }
           ]
