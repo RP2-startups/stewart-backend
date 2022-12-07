@@ -305,9 +305,9 @@ class ProjectController {
             attributes:['project_category_id'],
             as: "projectCategories",
             model: ProjectCategoryCategory,
-            where: {
+            where: categories ? {
               project_category_id: categories
-            }
+            } : {}
           },
         ] 
       });
