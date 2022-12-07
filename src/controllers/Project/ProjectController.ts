@@ -238,26 +238,50 @@ class ProjectController {
     res: Response
   ){
     try{
-        const results = await ProjectParticipation.findAll({
-          where:{user_id:{[Op.ne]:req.session.user.id}},
-          include: [
+      const projects = await ProjectParticipation.findAll({
+        where:{
+          user_id: req.session.user.id
+        },
+        include:[{
+          model:Project,
+          required:true,
+          as: 'project',
+          include:[
             {
-              required: true,
-              as: "project",
-              model: Project,
-              include:[{
-                required:true,
-                model: ProjectParticipation,
-                as:'projectParticipations',
-                where:{
-                  is_adm:true,
-                  user_id:req.session.user.id
+              model:ProjectParticipation,
+              required:true,
+              as: 'projectParticipations',
+              where:{
+                user_id:{
+                  [Op.ne]:req.session.user.id
                 }
               }
-            ],
-            }],
-        });
-        return res.status(200).json(results);
+            }
+          ]
+        }
+          
+        ]
+      })
+        // const results = await ProjectParticipation.findAll({
+        //   where:{user_id:{[Op.ne]:req.session.user.id}},
+        //   include: [
+        //     {
+        //       required: true,
+        //       as: "project",
+        //       model: Project,
+        //       include:[{
+        //         required:true,
+        //         model: ProjectParticipation,
+        //         as:'projectParticipations',
+        //         where:{
+        //           is_adm:true,
+        //           user_id:req.session.user.id
+        //         }
+        //       }
+        //     ],
+        //     }],
+        // });
+        return res.status(200).json(projects);
     }catch(e){
         console.log(e);
         return res.status(400).json({error: e});
